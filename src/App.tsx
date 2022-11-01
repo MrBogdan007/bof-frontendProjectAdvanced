@@ -4,10 +4,12 @@ import Contact from "./components/Profile";
 import NavBar from "./components/NavBar";
 import Users from "./components/Users";
 import SingleUser from "./components/SingleUser";
-import "./App.css";
+import "./style/App.css";
 import Product from "./components/Product";
 import Profile from "./components/Profile";
 import Cart from "./components/Cart";
+import Modal from "./components/interface/Modal"
+
 
 import { red } from "@mui/material/colors";
 import React, { useState, useEffect, createContext } from "react";
@@ -15,7 +17,6 @@ import logo from "./logo.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { Box, ThemeProvider } from "@mui/material";
 import { userSchema } from "./schema/userForm";
 import { createTheme } from "@mui/material/styles";
@@ -71,14 +72,26 @@ const App = () => {
     }
   } 
 
+  const [signIn,setSignIn] = useState(false);
+const registerSign = () => {
+  setSignIn(current=> !current);
+}
   return ( 
     <ThemeContext.Provider value={manageTheme}>
     <ThemeProvider theme={theme}>
     
       <Box sx={{backgroundColor:'background.default', color:'text.primary'}} className="App">
-      <PalleteButton/>
+      
         <BrowserRouter>
+        <div className="container">
+        <div className="header">
           <NavBar />
+         <span className="header__signIn" onClick={registerSign}>Sign In</span> 
+          <PalleteButton/>
+          <Modal/>
+        
+        </div>
+        </div>
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/product" element={<Product />}></Route>
@@ -91,7 +104,7 @@ const App = () => {
               <Route path=":id" element={<SingleUser />}></Route>
             </Route>
           </Routes>
-          Footer
+
         </BrowserRouter>
 
         <form onSubmit={handleSubmit(onSubmit)}>
