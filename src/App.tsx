@@ -1,51 +1,101 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import Home from "./components/Home";
+import About from "./components/Product";
+import Contact from "./components/Profile";
+import NavBar from "./components/NavBar";
+import Users from "./components/Users";
+import SingleUser from "./components/SingleUser";
+import "./App.css";
+import Product from "./components/Product";
+import Profile from "./components/Profile";
+import Cart from "./components/Cart";
+
+import { red } from "@mui/material/colors";
+import React, { useState, useEffect } from "react";
+import logo from "./logo.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {BrowserRouter, Route, Routes, Link} from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup';
-
-
-import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/Contact';
-import NavBar from './components/NavBar';
-import Users from './components/Users';
-import SingleUser from './components/SingleUser';
-
-import './App.css';
-import { userSchema } from './schema/userForm';
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { Box, ThemeProvider } from "@mui/material";
+import { userSchema } from "./schema/userForm";
+import { createTheme } from "@mui/material/styles";
+import { green, purple } from "@mui/material/colors";
+import IconButton from '@mui/material/IconButton';
 
 interface IFormInput {
-  firstname: string
+  firstname: string;
 }
-function App() {
-  const { register, handleSubmit } = useForm<IFormInput>(  {resolver: yupResolver(userSchema)});
- const onSubmit: SubmitHandler<IFormInput> = data => console.log(data);
- 
 
+const App = () => {
+  const { register, handleSubmit } = useForm<IFormInput>({
+    resolver: yupResolver(userSchema),
+  });
+  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+
+  const [mode, setMode] = useState<"dark" | "light">("light");
+
+  const theme = createTheme({
+    palette: {
+      mode,
+      ...(mode === "light"
+        ? {
+            primary: {
+              main: "#F0F0F1",
+            },
+            secondary: {
+              main: "#BCCEF8",
+            },
+            text: {
+              primary: "black",
+              secondary: "blue",
+            },
+            background: {
+              default: "#F0F0F1",
+            },
+          }
+        : {
+            primary: { main: "#003B8E" },
+            secondary: { main: "#1564BF" },
+            text: {
+              primary: "black",
+              secondary: "blue",
+            },
+            background: {
+              default: "#000000",
+            },
+          }),
+    },
+  });
   return (
-    <div className='App'>
+    <ThemeProvider theme={theme}>
+      <Box sx={{backgroundColor:'background.default'}} className="App">
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/product" element={<Product />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/cart" element={<Cart />}></Route>
+            <Route path="/users">
+              <Route path="" element={<Users />}>
+                {" "}
+              </Route>
+              <Route path=":id" element={<SingleUser />}></Route>
+            </Route>
+          </Routes>
+          Footer
+        </BrowserRouter>
 
-     <BrowserRouter>
-    <NavBar/>
-     <Routes>
-     <Route path='/' element={<Home/>}></Route>
-     <Route path='/about' element={<About/>}></Route>
-     <Route path='/contact' element={<Contact/>}></Route>
-     <Route path='/users' >
-      <Route path='' element={<Users/>}> </Route>
-      <Route path=':id' element={<SingleUser/>} ></Route>
-     </Route>
-
-     </Routes>
-     Footer
-     </BrowserRouter>
-
-     <form  onSubmit={handleSubmit(onSubmit)}>
-     
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-item">
-          <label htmlFor="firstname">Enter your first name</label>
-            <input type="text" {...register("firstname")} placeholder="Title" id="title"  />
+            <label htmlFor="firstname">Enter your first name</label>
+            <input
+              type="text"
+              {...register("firstname")}
+              placeholder="Title"
+              id="title"
+            />
           </div>
           <div className="form-item">
             <label htmlFor="lastname">Enter your last name</label>
@@ -61,26 +111,32 @@ function App() {
           </div>
           <div className="form-item">
             <label htmlFor="passwordConfirm">Confirm your password</label>
-            <input type="password" name="passwordConfirm" id="passwordConfirm" />
+            <input
+              type="password"
+              name="passwordConfirm"
+              id="passwordConfirm"
+            />
           </div>
           <div className="form-item">
-            <select name="status" id="status">
+            {/* <select name="status" id="status">
               <option value="none" selected disabled hidden>Status</option>
               <option value="done">Done</option>
               <option value="not started">Not started</option>
               <option value="in progress">In progress</option>
-            </select>
+            </select> */}
           </div>
           <div className="form-item">
-          <button type='submit' className="button button_sm">Add</button>
-      
-        </div>
-      
+            <button type="submit" className="button button_sm">
+              Add
+            </button>
+          </div>
         </form>
-    </div>
-    
+        <IconButton onClick={() => setMode(mode === "dark"? "light":"dark")}>
+          {mode === "light"? <Brightness4Icon/>:<Brightness7Icon/> }
+        </IconButton>
+      </Box>
+    </ThemeProvider>
   );
-  }
+};
 
 export default App;
-

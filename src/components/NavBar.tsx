@@ -6,9 +6,9 @@ const NavBar = () => {
    <>
    <nav>
    <Link to={''}>Home page</Link>
-   <Link to={'about'}>About page</Link>
-   <Link to={'contact'}>Contact page</Link>
-   <Link to={'users'}>Users page</Link>
+   <Link to={'product'}>Product page</Link>
+   <Link to={'profile'}>Profile page</Link>
+   <Link to={'cart'}>Cart page</Link>
    
    </nav>
    </>
