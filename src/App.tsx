@@ -8,8 +8,7 @@ import "./style/App.css";
 import Product from "./components/Product";
 import Profile from "./components/Profile";
 import Cart from "./components/Cart";
-import Modal from "./components/interface/Modal"
-
+import Modal from "./components/interface/Modal";
 
 import { red } from "@mui/material/colors";
 import React, { useState, useEffect, createContext } from "react";
@@ -21,13 +20,11 @@ import { Box, ThemeProvider } from "@mui/material";
 import { userSchema } from "./schema/userForm";
 import { createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 import PalleteButton from "./components/PalleteButton";
 
-
-export const ThemeContext = createContext({toggleMode: ()=>{}})
+export const ThemeContext = createContext({ toggleMode: () => {} });
 const App = () => {
-
   const [mode, setMode] = useState<"dark" | "light">("light");
   const theme = createTheme({
     palette: {
@@ -61,56 +58,56 @@ const App = () => {
           }),
     },
   });
-  const manageTheme =  {
-    toggleMode: () =>{
-      setMode((prevMode)=>(prevMode ==="light" ? "dark" : "light"))
-    }
-  } 
+  const manageTheme = {
+    toggleMode: () => {
+      setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    },
+  };
 
   //modal
-const [signIn,setSignIn] = useState(false);
-const registerSign = () => {
-  setSignIn(current=> !current);
-}
-  return ( 
+  const [signIn, setSignIn] = useState(false);
+  const registerSign = () => {
+    setSignIn((current) => !current);
+  };
+  return (
     <ThemeContext.Provider value={manageTheme}>
-    <ThemeProvider theme={theme}>
-    
-      <Box sx={{backgroundColor:'background.default', color:'text.primary'}} className="App">
-      
-        <BrowserRouter>
-        <div className="container">
-        <div className="header">
-          <NavBar />
-         <span className="header__signIn"  onClick={registerSign}>Sign In</span> 
-          <PalleteButton/>
-
-          
-        
-        </div>
-        </div>
-        <div style={{display: signIn?'block':'none' }} className={signIn?"header__modal":''} >
-          <Modal/>
-          </div>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/product" element={<Product />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
-            <Route path="/cart" element={<Cart />}></Route>
-            <Route path="/users">
-              <Route path="" element={<Users />}>
-                {" "}
+      <ThemeProvider theme={theme}>
+        <Box
+          sx={{ background:'url(./imgs/header/ecommerce.jpg)',backgroundColor: "background.default", color: "text.primary" }}
+          className="App"
+        >
+          <img src={require('./img/e-commerce.jpg')} alt="dfsd" />
+          <BrowserRouter>
+            <div className="container">
+              <div className="header">
+                <NavBar />
+                <span className="header__signIn" onClick={registerSign}>
+                  Sign In
+                </span>
+                <PalleteButton />
+              </div>
+            </div>
+            <div
+              style={{ display: signIn ? "block" : "none" }}
+              className="header__modal" 
+            >
+              <Modal />
+            </div>
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/product" element={<Product />}></Route>
+              <Route path="/profile" element={<Profile />}></Route>
+              <Route path="/cart" element={<Cart />}></Route>
+              <Route path="/users">
+                <Route path="" element={<Users />}>
+                  {" "}
+                </Route>
+                <Route path=":id" element={<SingleUser />}></Route>
               </Route>
-              <Route path=":id" element={<SingleUser />}></Route>
-            </Route>
-          </Routes>
-
-        </BrowserRouter>
-
-       
-
-      </Box>
-    </ThemeProvider>
+            </Routes>
+          </BrowserRouter>
+        </Box>
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 };
