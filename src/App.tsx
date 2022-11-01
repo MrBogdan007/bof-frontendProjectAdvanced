@@ -16,7 +16,7 @@ import React, { useState, useEffect, createContext } from "react";
 import logo from "./logo.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import { Box, ThemeProvider } from "@mui/material";
 import { userSchema } from "./schema/userForm";
 import { createTheme } from "@mui/material/styles";
@@ -24,15 +24,10 @@ import { green, purple } from "@mui/material/colors";
 import IconButton from '@mui/material/IconButton';
 import PalleteButton from "./components/PalleteButton";
 
-interface IFormInput {
-  firstname: string;
-}
+
 export const ThemeContext = createContext({toggleMode: ()=>{}})
 const App = () => {
-  const { register, handleSubmit } = useForm<IFormInput>({
-    resolver: yupResolver(userSchema),
-  });
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+
   const [mode, setMode] = useState<"dark" | "light">("light");
   const theme = createTheme({
     palette: {
@@ -72,7 +67,8 @@ const App = () => {
     }
   } 
 
-  const [signIn,setSignIn] = useState(false);
+  //modal
+const [signIn,setSignIn] = useState(false);
 const registerSign = () => {
   setSignIn(current=> !current);
 }
@@ -86,12 +82,16 @@ const registerSign = () => {
         <div className="container">
         <div className="header">
           <NavBar />
-         <span className="header__signIn" onClick={registerSign}>Sign In</span> 
+         <span className="header__signIn"  onClick={registerSign}>Sign In</span> 
           <PalleteButton/>
-          <Modal/>
+
+          
         
         </div>
         </div>
+        <div style={{display: signIn?'block':'none' }} className={signIn?"header__modal":''} >
+          <Modal/>
+          </div>
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/product" element={<Product />}></Route>
@@ -107,50 +107,7 @@ const registerSign = () => {
 
         </BrowserRouter>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-item">
-            <label htmlFor="firstname">Enter your first name</label>
-            <input
-              type="text"
-              {...register("firstname")}
-              placeholder="Title"
-              id="title"
-            />
-          </div>
-          <div className="form-item">
-            <label htmlFor="lastname">Enter your last name</label>
-            <input type="text" name="lastname" id="lastname" />
-          </div>
-          <div className="form-item">
-            <label htmlFor="email">Enter your email</label>
-            <input type="password" name="email" id="email" />
-          </div>
-          <div className="form-item">
-            <label htmlFor="password">Enter your password</label>
-            <input type="password" name="password" id="password" />
-          </div>
-          <div className="form-item">
-            <label htmlFor="passwordConfirm">Confirm your password</label>
-            <input
-              type="password"
-              name="passwordConfirm"
-              id="passwordConfirm"
-            />
-          </div>
-          <div className="form-item">
-            {/* <select name="status" id="status">
-              <option value="none" selected disabled hidden>Status</option>
-              <option value="done">Done</option>
-              <option value="not started">Not started</option>
-              <option value="in progress">In progress</option>
-            </select> */}
-          </div>
-          <div className="form-item">
-            <button type="submit" className="button button_sm">
-              Add
-            </button>
-          </div>
-        </form>
+       
 
       </Box>
     </ThemeProvider>
