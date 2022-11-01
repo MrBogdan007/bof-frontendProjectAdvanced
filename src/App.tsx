@@ -10,31 +10,29 @@ import Profile from "./components/Profile";
 import Cart from "./components/Cart";
 
 import { red } from "@mui/material/colors";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import logo from "./logo.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+
 import { Box, ThemeProvider } from "@mui/material";
 import { userSchema } from "./schema/userForm";
 import { createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
 import IconButton from '@mui/material/IconButton';
+import PalleteButton from "./components/PalleteButton";
 
 interface IFormInput {
   firstname: string;
 }
-
+export const ThemeContext = createContext({toggleMode: ()=>{}})
 const App = () => {
   const { register, handleSubmit } = useForm<IFormInput>({
     resolver: yupResolver(userSchema),
   });
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
-
   const [mode, setMode] = useState<"dark" | "light">("light");
-
   const theme = createTheme({
     palette: {
       mode,
@@ -58,7 +56,7 @@ const App = () => {
             primary: { main: "#003B8E" },
             secondary: { main: "#1564BF" },
             text: {
-              primary: "black",
+              primary: "white",
               secondary: "blue",
             },
             background: {
@@ -67,9 +65,18 @@ const App = () => {
           }),
     },
   });
-  return (
+  const manageTheme =  {
+    toggleMode: () =>{
+      setMode((prevMode)=>(prevMode ==="light" ? "dark" : "light"))
+    }
+  } 
+
+  return ( 
+    <ThemeContext.Provider value={manageTheme}>
     <ThemeProvider theme={theme}>
-      <Box sx={{backgroundColor:'background.default'}} className="App">
+    
+      <Box sx={{backgroundColor:'background.default', color:'text.primary'}} className="App">
+      <PalleteButton/>
         <BrowserRouter>
           <NavBar />
           <Routes>
@@ -131,11 +138,10 @@ const App = () => {
             </button>
           </div>
         </form>
-        <IconButton onClick={() => setMode(mode === "dark"? "light":"dark")}>
-          {mode === "light"? <Brightness4Icon/>:<Brightness7Icon/> }
-        </IconButton>
+
       </Box>
     </ThemeProvider>
+    </ThemeContext.Provider>
   );
 };
 
