@@ -1,11 +1,16 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { userSchema } from "../../schema/userForm";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 
-import React from "react";
+import React, { useState } from "react";
 import { ModalInt } from "../../types/form";
+import formReducer, { setForm } from "../../redux/reducers/formReducer";
 
-const Form = (signForm: ModalInt) => {
+const Form = ({signIn}: ModalInt) => {
+
+
+  const [modalReg,setModalReg] = useState(true)
   interface IFormInput {
     firstname: string;
   }
@@ -13,20 +18,23 @@ const Form = (signForm: ModalInt) => {
     resolver: yupResolver(userSchema),
   });
   const onSubmit: SubmitHandler<IFormInput> = data => {
+  console.log(data);
   
   };
 
   const registrationModal = () => {
-    return !signForm;
+    setModalReg((current) => !current)
   }
+
+  
   return (
     <>
-      {signForm ? (
-        <form style={{ display: signForm ? 'block': 'none'}} onSubmit={handleSubmit(onSubmit)}>
+      {modalReg ? 
+        <form  onSubmit={handleSubmit(onSubmit)}>
           <div className="form-item">
             <label htmlFor="email">Enter your email</label>
             <input type="password" name="email" id="email" />
-          </div>
+          </div>modalReg
           <div className="form-item">
             <label htmlFor="password">Enter your password</label>
             <input type="password" name="password" id="password" />
@@ -39,13 +47,13 @@ const Form = (signForm: ModalInt) => {
           </div>
           <div className="form-item">
             <span>You don't have an account?</span>
-            <button type="button" onClick={registrationModal} className="button button_sm">
+            <button type="button" onClick={() => registrationModal() } className="button button_sm">
               Create your account
             </button>
           </div>
         </form>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+       : 
+        <form style={{display: 'block'}} onSubmit={handleSubmit(onSubmit)}>
           <div className="form-item">
             <label htmlFor="firstname">Enter your first name</label>
             <input
@@ -91,7 +99,7 @@ const Form = (signForm: ModalInt) => {
             </button>
           </div>
         </form>
-      )}
+      }
     </>
   );
 };
