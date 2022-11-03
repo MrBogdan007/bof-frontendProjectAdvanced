@@ -112,7 +112,7 @@ const App = () => {
             
             <section className="guarantee">
               <h2 className="section-header">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque asperiores ab fuga animi. Quod nulla quibusdam tempore. Enim, necessitatibus ratione!
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. <br /> Cumque asperiores ab fuga animi.
               </h2>
               <div className="guarantee-block">
                 <div className="guarantee-element">
@@ -133,7 +133,11 @@ const App = () => {
               </div>
             </section>
             </div>
-           
+           <section className="images"> 
+              <div className="images-block">
+                <img src={require('./img/img1.jpg')} alt="chair" /><img src={require('./img/img2.jpg')} alt="" /><img src={require('./img/img3.jpg')} alt="" />
+              </div>
+           </section>
             
             <Routes>
               <Route path="/" element={<Home />}></Route>
