@@ -11,8 +11,7 @@ const formSlicer = createSlice({
    reducers: {
       //methods of reducers object
       setForm: (state,action: PayloadAction<boolean>) => {
-         state = action.payload
-         return state
+
       },
 
    }

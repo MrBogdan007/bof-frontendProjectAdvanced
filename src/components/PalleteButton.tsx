@@ -8,7 +8,7 @@ const PalleteButton = () => {
    const colorMode = useContext(ThemeContext);
    const theme = useTheme();
   return (
-    <div>
+    <div className="header-nav__button">
          <IconButton onClick={() => colorMode.toggleMode()}>
          {
             theme.palette.mode ==='light' ? <Brightness4Icon/> : <Brightness7Icon/>
